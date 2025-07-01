@@ -53,7 +53,13 @@ export async function POST (request : NextRequest) {
         const result = await new Promise<CloudinaryUploadResult>(
              (resolve,reject)=>{
                 const uploadStream = cloudinary.uploader.upload_stream(
-                    {folder : "saas-app-uploads"},
+                    {
+                        resource_type : "video",
+                        folder : "video-upload",
+                        transformation : [
+                            {quality : "auto",fetch_format : "mp4"}
+                        ]
+                    },
                     (error,result)=>{
                         if(error) reject(error)
                         else resolve(result as CloudinaryUploadResult)    
@@ -63,10 +69,23 @@ export async function POST (request : NextRequest) {
              }
         )
 
-        return NextResponse.json({publicId : result.public_id},{status : 200})
+       const video = await prisma.video.create({
+         data : {
+            title,
+            description,
+            publicId : result.public_id,
+            originalSize,
+            compressedSize : String(result.bytes),
+            duration : result.duration || 0
+         }
+       })
+
+       return NextResponse.json(video)
 
      } catch (error) {
-        console.log("Error uploading image error---- ",error)
-        return NextResponse.json({error : "Upload image failed"},{status : 500})
+        console.log("Error uploading video error---- ",error)
+        return NextResponse.json({error : "Upload video failed"},{status : 500})
+     }finally{
+        await prisma.$disconnect()
      }
 }
