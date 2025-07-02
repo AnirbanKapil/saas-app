@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CldImage } from 'next-cloudinary'
 import { error } from 'console';
+import { blob } from 'stream/consumers';
 
 
 const socialFormats = {
@@ -57,6 +58,23 @@ const handleFileUpload = async (event : React.ChangeEvent<HTMLInputElement>) => 
   }
 }
 
+const handleDownload = () => {
+  if(!imageRef.current) return
+
+  fetch(imageRef.current.src)
+  .then((response)=> response.blob()) 
+  .then((blob)=> {
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = "image.png"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+    document.body.removeChild(link)
+  }) 
+}
 
   return (
     <div>SocialShare</div>
