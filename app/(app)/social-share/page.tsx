@@ -29,9 +29,9 @@ useEffect(()=>{
   }
 },[selectedFormat,isUploading])
 
-const handleFileUpload = async (event : React.ChangeEvent<HTMLInputElement>) => {
+const handleFileUpload = async (e : React.ChangeEvent<HTMLInputElement>) => {
      
-  const file = event.target.files?.[0]
+  const file = e.target.files?.[0]
   
   if(!file) return
   
