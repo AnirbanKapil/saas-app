@@ -1,8 +1,7 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react'
 import { CldImage } from 'next-cloudinary'
-import { error } from 'console';
-import { blob } from 'stream/consumers';
+
 
 
 const socialFormats = {
