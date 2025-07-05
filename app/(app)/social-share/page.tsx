@@ -48,7 +48,9 @@ const handleFileUpload = async (e : React.ChangeEvent<HTMLInputElement>) => {
     if(!response.ok) throw new Error("Failed to upload image")
     
     const data = await response.json() 
+    
     setUploadedImage(data.publicId) 
+    
   } catch (error) {
     console.log(error)
     alert("Failed to upload Image")
@@ -59,7 +61,7 @@ const handleFileUpload = async (e : React.ChangeEvent<HTMLInputElement>) => {
 
 const handleDownload = () => {
   if(!imageRef.current) return
-
+  
   fetch(imageRef.current.src)
   .then((response)=> response.blob()) 
   .then((blob)=> {
