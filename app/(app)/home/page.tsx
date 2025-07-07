@@ -11,7 +11,7 @@ function Home() {
   
   const [video,setVideo] = useState<Video[]>([])
   const [loading,setLoading] = useState(false)
-  const [error,setError] = useState(false)
+  const [error,setError] = useState("")
 
   const fetchVideos = useCallback(async ()=>{
     try {
