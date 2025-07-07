@@ -1,7 +1,7 @@
 "use client"
 import axios from "axios"
 import VideoCard from "@/components/VideoCard"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Video } from "@/types"
 
 
@@ -18,6 +18,8 @@ function Home() {
       const response = await axios.get("/api/videos")
       if(Array.isArray(response.data)){
         setVideo(response.data)
+      }else{
+        throw new Error("Unexpected response format")
       }
     } catch (error) {
       console.log(error);
@@ -26,6 +28,26 @@ function Home() {
             setLoading(false)
     }         
   },[])
+
+  useEffect(()=>{
+    fetchVideos()
+  },[fetchVideos])
+
+ const handleDownload = useCallback((url : string)=>{
+    const link = document.createElement("a")
+    link.href = url
+    link.download = "image.png"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+    document.body.removeChild(link)
+
+ },[])
+
+ if(loading){
+  return <div>Loading.....</div>
+ }
 
   return (
     <div>Home</div>
