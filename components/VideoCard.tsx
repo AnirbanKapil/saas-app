@@ -68,7 +68,11 @@ const VideoCard : React.FC<VideoCardProps>  = ({video , onDownload}) => {
 
   useEffect(() => {
         setPreviewError(false);
-      }, [isHovered]);    
+      }, [isHovered]);  
+      
+  const handlePreviewError = () => {
+        setPreviewError(true);
+      };    
 
   return (
         <div
