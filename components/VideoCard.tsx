@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import {getCldImageUrl,getCldVideoUrl} from "next-cloudinary"
 import { Download , Clock , FileDown , FileUp } from 'lucide-react'
 import dayjs from 'dayjs'
@@ -18,8 +18,8 @@ dayjs.extend(relativeTime)
 
 const VideoCard : React.FC<VideoCardProps>  = ({video , onDownload}) => {
 
-  const [isHovered , setIsHover] = useState(false)
-  const [previewError,setPreviewError] = useState(false)
+  const [isHovered , setIsHovered] = useState(false)
+  const [previewError, setPreviewError] = useState(false)
 
   const getThumbnailUrl = useCallback((publicId : string)=>{
         return getCldImageUrl({
@@ -66,7 +66,10 @@ const VideoCard : React.FC<VideoCardProps>  = ({video , onDownload}) => {
         (1 - Number(video.compressedSize) / Number(video.originalSize)) * 100
       );
 
-      
+  useEffect(() => {
+        setPreviewError(false);
+      }, [isHovered]);    
+
   return (
         <div
           className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300"
